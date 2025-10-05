@@ -20,7 +20,7 @@ export default defineConfig({
             ],
 
             editLink: {
-                baseUrl: "https://github.com/Vencord/vesktop.vencord.dev/tree/main/"
+                baseUrl: "https://github.com/Vencord/vesktop.dev/edit/main/"
             },
 
             lastUpdated: true,
