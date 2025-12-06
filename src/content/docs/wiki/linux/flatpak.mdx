@@ -2,7 +2,7 @@
 title: Flatpak Notes
 sidebar:
     order: 3
-description: Useful information for using Vesktop on Linux
+description: Useful information for using Equibop on Linux
 ---
 
 ## Wayland support
@@ -11,12 +11,12 @@ See [Tips & Tricks - Wayland Support](/wiki/linux/tips#wayland-support) for info
 
 ## File Access
 
-The Vesktop flatpak by default only has access to a limited set of files. This will break Drag & Drop and file pasting.
+The Equibop flatpak by default only has access to a limited set of files. This will break Drag & Drop and file pasting.
 
-You can give Vesktop access to all your files with [Flatseal](https://flathub.org/en/apps/com.github.tchx84.Flatseal) or by running the following command:
+You can give Equibop access to all your files with [Flatseal](https://flathub.org/en/apps/com.github.tchx84.Flatseal) or by running the following command:
 
 ```sh
-flatpak override --filesystem=home:ro dev.vencord.Vesktop
+flatpak override --filesystem=home:ro org.equicord.equibop
 ```
 
 ## Discord Rich Presence (Game Activity)
@@ -30,9 +30,9 @@ Run the following commands to enable support for games using Game SDK:
 
 ```sh
 mkdir -p ~/.config/user-tmpfiles.d
-echo 'L %t/discord-ipc-0 - - - - .flatpak/dev.vencord.Vesktop/xdg-run/discord-ipc-0' > ~/.config/user-tmpfiles.d/discord-rpc.conf
+echo 'L %t/discord-ipc-0 - - - - .flatpak/org.equicord.equibop/xdg-run/discord-ipc-0' > ~/.config/user-tmpfiles.d/discord-rpc.conf
 systemctl --user enable --now systemd-tmpfiles-setup.service
 
-sudo flatpak override --filesystem=xdg-run/.flatpak/dev.vencord.Vesktop:create --filesystem=xdg-run/discord-ipc-0
-flatpak --user override --filesystem=xdg-run/.flatpak/dev.vencord.Vesktop:create --filesystem=xdg-run/discord-ipc-0
+sudo flatpak override --filesystem=xdg-run/.flatpak/org.equicord.equibop:create --filesystem=xdg-run/discord-ipc-0
+flatpak --user override --filesystem=xdg-run/.flatpak/org.equicord.equibop:create --filesystem=xdg-run/discord-ipc-0
 ```

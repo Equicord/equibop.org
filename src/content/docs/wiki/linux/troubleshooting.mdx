@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-description: Common issues and their solutions for Vesktop on Linux
+description: Common issues and their solutions for Equibop on Linux
 sidebar:
     order: 2
 ---
@@ -9,7 +9,7 @@ sidebar:
 
 This means you either have no Screen cast portal, or it's broken. See [XDG Desktop Portal on the Arch Linux Wiki](https://wiki.archlinux.org/title/XDG_Desktop_Portal) for more information.
 
-## Vesktop freezes after getting pinged or messaged
+## Equibop freezes after getting pinged or messaged
 
 This is due to having no Notification Server on your system. Either [install one](https://wiki.archlinux.org/title/Desktop_notifications)
 or disable Desktop Notifications in Discord Notification settings
@@ -18,9 +18,9 @@ or disable Desktop Notifications in Discord Notification settings
 
 Install `xdg-utils`
 
-## Vesktop looks blurry
+## Equibop looks blurry
 
-The most likely cause is that Vesktop is running in XWayland; Try running in Wayland instead.
+The most likely cause is that Equibop is running in XWayland; Try running in Wayland instead.
 
 See [Tips & Tricks - Wayland Support](/wiki/linux/tips#wayland-support) for more information.
 
@@ -34,8 +34,8 @@ This happens because these videos use the HEVC encoding. Follow these steps to e
     ```
     If there is no output, it's not supported.
 2. If it's not supported, try to [install it](https://wiki.archlinux.org/title/Hardware_video_acceleration#Installation) and repeat step 1. You need exactly VA-API, not VDPAU or NVDEC.
-3. Run Vesktop with the following flags:
+3. Run Equibop with the following flags:
     ```sh
-    vesktop --enable-features=VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE,VaapiOnNvidiaGPUs
+    equibop --enable-features=VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE,VaapiOnNvidiaGPUs
     ```
     To make this permanent, see [Tips & Tricks - Making Command Line Flags Permanent](/wiki/linux/tips).
