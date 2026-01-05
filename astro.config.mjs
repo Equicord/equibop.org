@@ -31,7 +31,7 @@ export default defineConfig({
             ],
 
             editLink: {
-                baseUrl: "https://github.com/Equicord/equibop.org/edit/main/"
+                baseUrl: "https://github.com/Equicord/equibob.org/edit/main/"
             },
 
             lastUpdated: true,
