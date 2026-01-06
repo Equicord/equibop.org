@@ -5,39 +5,68 @@ sidebar:
     order: 1
 ---
 
-## Wayland Support
+## Equibop Arguments & Customization
+
+If you need to customize how Equibop runs, you can pass arguments directly via the terminal or through the application settings at `Settings > Equibop Settings > Arguments > Configure`.
+
+### **Wayland Support**
 
 Equibop runs as an X11 application by default. You can override this behaviour.
 
--   If you are using Flatpak, open [Flatseal](https://flathub.org/en/apps/com.github.tchx84.Flatseal) and deny the `X11 windowing system` permission for Equibop.
--   If you are not using Flatpak, you can opt into Wayland by running equibop with the `--ozone-platform-hint=auto` flag. To make this permanent, see [Making Command line flags permanent](#making-command-line-flags-permanent).
+```bash
+--wayland
+```
+
+This is a shortcut flag that forces the application to use the **Ozone Wayland** platform. It automatically enables:
+
+* `WaylandWindowDecorations`
+* `VaapiVideoDecodeLinuxGL` (Hardware acceleration)
+> **Note:** You can still use the manual string:
+> `--enable-features=UseOzonePlatform --ozone-platform=wayland`
+### **Security & Performance**
+
+```bash
+--no-sandbox
+```
+
+Disables the Chromium sandbox. This is generally discouraged for security reasons but is often required when the application is executed as **root**.
+
+```bash
+--force_high_performance_gpu
+```
+
+Instructs the graphics engine to ignore integrated graphics and prioritize the discrete (high-performance) GPU.
+
+### **Additional Features**
+
+* **Middle Click Auto Scroll:** Run with `--enable-blink-features=MiddleClickAutoscroll`. 
+    * *Note:* This conflicts with the Linux "middle click to paste" behavior. To fix this on X11, use [XMousePasteBlock](https://github.com/milaq/XMousePasteBlock). On Wayland/GNOME, disable it via **Gnome Tweaks**.
+
+---
 
 ## GNOME Tray Icon
 
-To enable the tray icon on GNOME, install the [AppIndicator and KStatusNotifierItem Support extension](https://extensions.gnome.org/extension/615/appindicator-support/)
+To enable the tray icon on GNOME, install the [AppIndicator and KStatusNotifierItem Support extension](https://extensions.gnome.org/extension/615/appindicator-support/).
 
-## Making Command Line Flags Permanent
+---
 
-Locate Equibop's `.desktop` file.
+## Making Flags Permanent
 
+You can make these arguments persistent using two different methods:
+
+### Method 1: Persistent Configuration File (Recommended)
+The launcher supports reading arguments from a specific config file.
+* **File Path:** `${XDG_CONFIG_HOME}/equibop-flags.conf`
+* **Usage:** Lines starting with `#` are ignored. Valid entries are automatically appended to the execution command.
+
+### Method 2: Editing the .desktop File
+Locate Equibop's `.desktop` file:
 ```sh
 locate -ib equibop.desktop
 ```
 
-It should usually be in `/usr/share/applications/equibop.desktop`.
+Usually in `/usr/share/applications/equibop.desktop`. Open it and add your flags to the `Exec` line, before the `%U`:
 
-Open it with a text editor and add your flags to the `Exec` line, after the binary path and before the `%U` (if it exists).
-
+```text
+Exec=/usr/bin/equibop --wayland --force_high_performance_gpu %U
 ```
-Exec=/usr/bin/equibop --ozone-platform-hint=auto %U
-```
-
-## Enable Middle Click Auto Scroll
-
-To enable middle click auto scroll, run Equibop with the `--enable-blink-features=MiddleClickAutoscroll` flag. To make this permanent, see [Making Command line flags permanent](#making-command-line-flags-permanent).
-
-By default, this will conflict with the default Linux behaviour of pasting the clipboard contents when middle clicking. To change this behaviour:
-
--   If you are running Equibop in X11 (default), install and run [XMousePasteBlock](https://github.com/milaq/XMousePasteBlock).
--   If you are running Equibop in Wayland, you might be able to disable it in your Desktop settings.
-    On GNOME, you can disable it in [Gnome Tweaks](https://wiki.gnome.org/Apps/Tweaks).
