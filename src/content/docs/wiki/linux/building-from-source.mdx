@@ -1,0 +1,49 @@
+---
+title: Building from Source
+description: Learn how to build Equibop from source for development purposes.
+sidebar:
+    order: 3
+---
+
+To build Equibop, the standalone client, you must have the following dependencies installed:
+
+* [Git](https://git-scm.com/downloads)
+* [Bun](https://bun.sh)
+
+### Setup
+
+```sh
+git clone https://github.com/Equicord/Equibop
+cd Equibop
+
+# Install Dependencies
+bun install
+```
+
+### Build Targets & Options
+
+Equibop can be built or run in several ways:
+
+* **Run without packaging:** `bun start`
+* **Package for your OS:** `bun package`
+* **Build Linux Pacman package:** `bun package --linux pacman`
+* **Package to a directory only:** `bun package:dir`
+
+## Building LibVesktop from Source
+
+**LibVesktop** is a small C++ helper library that Equibop uses on Linux to emit D-Bus events. By default, prebuilt binaries for **x64** and **arm64** are used.
+
+If you prefer to build it from source yourself, follow these steps:
+
+1. **Install build dependencies:**
+* **Debian/Ubuntu:** `apt install build-essential python3 curl pkg-config libglib2.0-dev`
+* **Fedora:** `dnf install @c-development @development-tools python3 curl pkgconf-pkg-config glib2-devel`
+
+2. **Run the build command:**
+
+```sh
+bun buildLibVesktop
+
+```
+
+3. **Finalize:** From now on, building Equibop will prioritize and use your local build of LibVesktop.

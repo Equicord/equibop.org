@@ -1,0 +1,31 @@
+---
+title: Dev Build
+description: Learn how to enable user plugins and use development builds in Equibop
+sidebar:
+    order: 2
+---
+
+To use custom user plugins or test new features, you can point Equibop to a local development build of Equicord.
+
+## Prerequisites
+
+Before configuring Equibop, you must have a local version of Equicord built on your system.
+
+1.  **Build Equicord from Source**: Follow the official [Building from Source guide](https://docs.equicord.org/building-from-source) to clone the repository and install dependencies.
+
+2.  **Add User Plugins**: If you want to use custom plugins, place them in the `src/userplugins` folder as described in the [Installing User Plugins guide](https://docs.equicord.org/plugins#installing-user-plugins).
+
+## Configuring Equibop
+
+Once your local build is ready, you need to tell Equibop where to find it:
+
+1.  Open **Equibop Settings**.
+2.  Navigate to **Developer Settings**.
+3.  Find **Equicord Location** and click **Change**.
+4.  Navigate to the folder where you cloned Equicord and select the `dist` folder inside it.
+
+![tutorial in image](/src/assets/img-tutorial.jpg)
+
+:::tip
+You can find a full list of available flags for Equibop [here](/wiki/linux/tips#applying-custom-arguments).
+:::

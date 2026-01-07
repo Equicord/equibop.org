@@ -5,39 +5,121 @@ sidebar:
     order: 1
 ---
 
-## Wayland Support
+## Applying custom arguments
 
-Equibop runs as an X11 application by default. You can override this behaviour.
+Any of the flags listed below can be applied using one of these three methods:
 
--   If you are using Flatpak, open [Flatseal](https://flathub.org/en/apps/com.github.tchx84.Flatseal) and deny the `X11 windowing system` permission for Equibop.
--   If you are not using Flatpak, you can opt into Wayland by running equibop with the `--ozone-platform-hint=auto` flag. To make this permanent, see [Making Command line flags permanent](#making-command-line-flags-permanent).
+1. **Tray icon:** `Right-click on the Equibop tray icon > Launch arguments`.
+2. **Desktop entry:** Edit the `Exec` line in `/usr/share/applications/equibop.desktop`.
+3. **Config file:** Add flags to `${XDG_CONFIG_HOME}/equibop-flags.conf` (see [Configuration Details](/wiki/linux/tips/#configuration-details) section).
 
-## GNOME Tray Icon
+## Wayland support
+
+Equibop runs as an X11 application by default. You can opt into Wayland in several ways depending on how you run Equibop. To make this permanent, see [Making Command line flags permanent](#making-command-line-flags-permanent).
+
+### Shortcut
+
+```bash
+--wayland
+```
+
+This is a convenient shortcut that will enable native Wayland behavior and automatically enable features such as:
+
+* `WaylandWindowDecorations`
+* `VaapiVideoDecodeLinuxGL` (hardware acceleration)
+
+> **Manual equivalent:**
+>
+> ```bash
+> --enable-features=UseOzonePlatform --ozone-platform=wayland
+> ```
+
+### Ozone automatic hint (alternate)
+
+If you prefer the Ozone auto hint instead of forcing Wayland, use:
+
+```bash
+--ozone-platform-hint=auto
+```
+
+This is useful when you want Equibop to prefer Wayland when available while still falling back to X11.
+
+### Flatpak users
+
+If you installed Equibop via Flatpak, open **[Flatseal](https://flathub.org/en/apps/com.github.tchx84.Flatseal)** and **deny** the **"X11 windowing system"** permission for Equibop. This ensures the Flatpak targets Wayland instead of X11.
+
+## GNOME tray icon
 
 To enable the tray icon on GNOME, install the [AppIndicator and KStatusNotifierItem Support extension](https://extensions.gnome.org/extension/615/appindicator-support/)
 
-## Making Command Line Flags Permanent
+## Sandbox control
 
-Locate Equibop's `.desktop` file.
+```bash
+--no-sandbox
+```
+
+Disables the Chromium sandbox. This is **discouraged** for regular use because it weakens security. Only use it if you understand the risks or if you must run the application as **root**.
+
+## GPU selection
+
+```bash
+--force_high_performance_gpu
+```
+
+Forces the engine to prefer the discrete GPU (if available) over integrated graphics.
+
+## Middle-click auto scroll
+
+Enable middle-click autoscroll with:
+
+```bash
+--enable-blink-features=MiddleClickAutoscroll
+```
+
+By default this conflicts with the common Linux behavior where middle-click pastes the primary selection. Fixes by environment:
+
+-   If you are running Equibop in X11 (default), install and run [XMousePasteBlock](https://github.com/milaq/XMousePasteBlock).
+-   If you are running Equibop in Wayland, you might be able to disable it in your Desktop settings.
+    On GNOME, you can disable it in [Gnome Tweaks](https://wiki.gnome.org/Apps/Tweaks).
+
+---
+
+## Making command-line flags permanent
+
+You can persist flags either by editing the `.desktop` file or by creating the flags file described below.
+
+### Find the desktop file
 
 ```sh
 locate -ib equibop.desktop
 ```
 
-It should usually be in `/usr/share/applications/equibop.desktop`.
+Common location: `/usr/share/applications/equibop.desktop` (but your distribution may place it elsewhere).
 
-Open it with a text editor and add your flags to the `Exec` line, after the binary path and before the `%U` (if it exists).
+### Edit the Exec line
 
-```
+Open the `.desktop` file with your preferred editor and append the flags after the binary and before `%U` (if present):
+
+```text
 Exec=/usr/bin/equibop --ozone-platform-hint=auto %U
 ```
 
-## Enable Middle Click Auto Scroll
+## Configuration details
 
-To enable middle click auto scroll, run Equibop with the `--enable-blink-features=MiddleClickAutoscroll` flag. To make this permanent, see [Making Command line flags permanent](#making-command-line-flags-permanent).
+Create `${XDG_CONFIG_HOME}/equibop-flags.conf` to keep persistent flags across updates and desktop entry resets.
 
-By default, this will conflict with the default Linux behaviour of pasting the clipboard contents when middle clicking. To change this behaviour:
+* One flag per line or multiple flags on a single line (shell style) are both acceptable.
+* Lines starting with `#` are ignored (useful for comments).
 
--   If you are running Equibop in X11 (default), install and run [XMousePasteBlock](https://github.com/milaq/XMousePasteBlock).
--   If you are running Equibop in Wayland, you might be able to disable it in your Desktop settings.
-    On GNOME, you can disable it in [Gnome Tweaks](https://wiki.gnome.org/Apps/Tweaks).
+Example `equibop-flags.conf`:
+
+```text
+# Make Equibop prefer Wayland when available
+--wayland
+
+# Prefer discrete GPU
+--force_high_performance_gpu
+
+# Enable middle-click autoscroll
+--enable-blink-features=MiddleClickAutoscroll
+```

@@ -2,8 +2,18 @@
 title: Troubleshooting
 description: Common issues and their solutions for Equibop on Linux
 sidebar:
-    order: 2
+    order: 4
 ---
+
+## General Troubleshooting & File Issues
+
+* **Corrupted Database or Missing Files:** If `locate` shows a corrupted file read (`pread: Short read (file corrupted? )`) or does not find the file, try searching manually:
+    ```sh
+    find / -name "equibop.desktop" 2>/dev/null
+    ```
+    Or check the standard directories: `/usr/share/applications` and `~/.local/share/applications`.
+    
+* **Persistence after Updates:** If your distro overwrites `/usr/share/applications` on update, prefer the `${XDG_CONFIG_HOME}/equibop-flags.conf` approach or place a local `.desktop` in `~/.local/share/applications`.
 
 ## Nothing happens when trying to start a Screenshare
 
@@ -38,4 +48,4 @@ This happens because these videos use the HEVC encoding. Follow these steps to e
     ```sh
     equibop --enable-features=VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE,VaapiOnNvidiaGPUs
     ```
-    To make this permanent, see [Tips & Tricks - Making Command Line Flags Permanent](/wiki/linux/tips).
+    To make this permanent, see [Tips & Tricks - Making Command Line Flags Permanent](/wiki/linux/tips#making-command-line-flags-permanent).
