@@ -34,15 +34,13 @@ This is a convenient shortcut that will enable native Wayland behavior and autom
 > --enable-features=UseOzonePlatform --ozone-platform=wayland
 > ```
 
-### Ozone automatic hint (alternate)
-
-If you prefer the Ozone auto hint instead of forcing Wayland, use:
+### Ozone platform
 
 ```bash
---ozone-platform-hint=auto
+--ozone-platform <x11 | wayland>
 ```
 
-This is useful when you want Equibop to prefer Wayland when available while still falling back to X11.
+Explicitly sets whether Equibop runs under Wayland or X11 (XWayland). Use `--ozone-platform=wayland` to force native Wayland, or `--ozone-platform=x11` to force XWayland.
 
 ### Flatpak users
 
@@ -68,6 +66,15 @@ Disables the Chromium sandbox. This is **discouraged** for regular use because i
 
 Forces the engine to prefer the discrete GPU (if available) over integrated graphics.
 
+## Feature flags
+
+```bash
+--enable-features <feature1,feature2,…>
+--disable-features <feature1,feature2,…>
+```
+
+Enable or disable specific Chromium features by name, separated by commas. For example, `--enable-features=UseOzonePlatform` enables Ozone. Refer to the [Chromium command-line switches reference](https://peter.sh/experiments/chromium-command-line-switches) for a full list of available feature names.
+
 ## Middle-click auto scroll
 
 Enable middle-click autoscroll with:
@@ -82,36 +89,77 @@ By default this conflicts with the common Linux behavior where middle-click past
 -   If you are running Equibop in Wayland, you might be able to disable it in your Desktop settings.
     On GNOME, you can disable it in [Gnome Tweaks](https://wiki.gnome.org/Apps/Tweaks).
 
-## Microphone & Deafen Toggle
-
-These commands allow you to toggle your microphone or deafen status dynamically.
-
-#### **Native:**
+## Start minimized
 
 ```bash
-equibop --toggle-mic
-equibop --toggle-deafen
+-m
+--start-minimized
 ```
 
-#### **Flatpak:**
+Launches Equibop directly to the system tray without showing the main window.
+
+## Windows spoof
 
 ```bash
+--windows-spoof
+```
+
+Spoofs the operating system reported to Discord as Windows. Only available on non-Windows systems. May be useful if you encounter platform-specific issues.
+
+## User-Agent customization
+
+```bash
+--user-agent <ua>
+--user-agent-os <windows | linux | darwin>
+```
+
+`--user-agent` sets a fully custom User-Agent string. `--user-agent-os` is a shorthand to set only the OS portion of the User-Agent to `windows`, `linux`, or `darwin`. Both options **may trigger anti-spam or break voice chat**, so use them with caution.
+
+## Voice & Call status commands
+
+These commands query or change your voice/call state from the terminal. **The application must be running for them to take effect.**
+
+### Query commands
+
+```bash
+equibop --get-call-duration      # Shows the current call duration ([hh]:mm:ss)
+equibop --get-voice-channel-name # Shows the name of the voice channel you are in
+equibop --is-in-call             # Shows whether you are currently on a voice call or not
+```
+
+### Toggle commands
+
+```bash
+equibop --toggle-mic     # Toggle your microphone status
+equibop --toggle-deafen  # Toggle your deafen status
+equibop --toggle-vad     # Toggle Voice Activity Detection (Voice Activity <-> Push To Talk)
+```
+
+#### Flatpak equivalents
+
+```bash
+flatpak run org.equicord.equibop --get-call-duration
+flatpak run org.equicord.equibop --get-voice-channel-name
+flatpak run org.equicord.equibop --is-in-call
 flatpak run org.equicord.equibop --toggle-mic
 flatpak run org.equicord.equibop --toggle-deafen
+flatpak run org.equicord.equibop --toggle-vad
 ```
-:::caution[Important]
-**The application must be running for the commands to take effect.** 
 
-Unlike configuration flags, these are **action commands**.
+:::caution[Important]
+**These are action/query commands, not launch flags.**
 * **Do NOT** add these to your launch arguments.
 * **Do NOT** add these to your `.desktop` file exec line.
 * **Do NOT** add these to your `equibop-flags.conf` file.
 :::
+:::note
+For more information you can always use `equibop --help` in your terminal!
+:::
 
-### How to use them correctly
+### How to use toggle commands correctly
 
-1. **Terminal:** Run the command manually while Equibop is open to change your status.
-2. **System Shortcuts (Recommended):** The most effective way to use these is to bind them to a global keyboard shortcut in your Desktop Environment (GNOME, KDE, etc.).
+1. **Terminal:** Run the command manually while Equibop is open.
+2. **System Shortcuts (Recommended):** Bind them to global keyboard shortcuts in your Desktop Environment (GNOME, KDE, etc.).
 
 ---
 
@@ -153,4 +201,7 @@ Example `equibop-flags.conf`:
 
 # Enable middle-click autoscroll
 --enable-blink-features=MiddleClickAutoscroll
+
+# Start minimized to tray
+--start-minimized
 ```
